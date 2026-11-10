@@ -1,0 +1,97 @@
+{
+  "meta": {
+    "test_set": "OffensEval-TR 2020 official test set",
+    "n_test": 3528,
+    "offensive_share": 0.20294784580498867,
+    "latency_runs": 300,
+    "budget_ms": 50.0,
+    "hardware": "13th Gen Intel(R) Core(TM) i5-13500H, 16 logical cores, CPU only",
+    "os": "Windows-10-10.0.26300-SP0"
+  },
+  "rows": [
+    {
+      "key": "lexicon",
+      "model": "Lexicon + edit distance (rule)",
+      "precision": "-",
+      "macro_f1": 0.6593803336912625,
+      "accuracy": 0.7859977324263039,
+      "off_precision": 0.47049924357034795,
+      "off_recall": 0.43435754189944137,
+      "off_f1": 0.4517066085693537,
+      "size_mb": 0.007935,
+      "latency_ms_mean": 0.04185666679404676,
+      "latency_ms_p95": 0.08300499175675213,
+      "within_budget": true
+    },
+    {
+      "key": "tfidf",
+      "model": "tf-idf + logistic regression",
+      "precision": "FP64",
+      "macro_f1": 0.7651439755923253,
+      "accuracy": 0.8520408163265306,
+      "off_precision": 0.6456456456456456,
+      "off_recall": 0.6005586592178771,
+      "off_f1": 0.622286541244573,
+      "size_mb": 2.53287,
+      "latency_ms_mean": 1.5829003340331838,
+      "latency_ms_p95": 2.363525005057455,
+      "within_budget": true
+    },
+    {
+      "key": "w2v_ffn",
+      "model": "word2vec + feedforward net",
+      "precision": "FP32",
+      "macro_f1": 0.6992534660504799,
+      "accuracy": 0.7868480725623582,
+      "off_precision": 0.4801762114537445,
+      "off_recall": 0.6089385474860335,
+      "off_f1": 0.5369458128078818,
+      "size_mb": 24.026385,
+      "latency_ms_mean": 0.20896599996679774,
+      "latency_ms_p95": 0.40057499281829223,
+      "within_budget": true
+    },
+    {
+      "key": "bert_fp32",
+      "model": "BERTurk fine-tuned (PyTorch)",
+      "precision": "FP32",
+      "macro_f1": 0.8155409560647324,
+      "accuracy": 0.889172335600907,
+      "off_precision": 0.7787307032590052,
+      "off_recall": 0.6340782122905028,
+      "off_f1": 0.6989992301770592,
+      "size_mb": 442.499064,
+      "latency_ms_mean": 33.21370866605624,
+      "latency_ms_p95": 50.98024999169866,
+      "within_budget": false
+    },
+    {
+      "key": "bert_onnx_fp32",
+      "model": "BERTurk fine-tuned (ONNX Runtime)",
+      "precision": "FP32",
+      "macro_f1": 0.8155409560647324,
+      "accuracy": 0.889172335600907,
+      "off_precision": 0.7787307032590052,
+      "off_recall": 0.6340782122905028,
+      "off_f1": 0.6989992301770592,
+      "size_mb": 442.687773,
+      "latency_ms_mean": 23.59162500060241,
+      "latency_ms_p95": 37.733344992739156,
+      "within_budget": true
+    },
+    {
+      "key": "bert_int8",
+      "model": "BERTurk quantized (ONNX Runtime)",
+      "precision": "INT8",
+      "macro_f1": 0.8153991052507652,
+      "accuracy": 0.8888888888888888,
+      "off_precision": 0.7764505119453925,
+      "off_recall": 0.6354748603351955,
+      "off_f1": 0.6989247311827957,
+      "size_mb": 111.379868,
+      "latency_ms_mean": 11.22096700060259,
+      "latency_ms_p95": 20.82830000581453,
+      "within_budget": true
+    }
+  ]
+}

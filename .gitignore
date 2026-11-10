@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+# data and weights are downloaded / reproduced, never committed (R7)
+data/
+models/
+# local, personal files
+slides/
+slides_config.json
+.*/

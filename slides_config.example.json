@@ -1,0 +1,40 @@
+{
+  "name": "YOUR NAME",
+  "student_id": "STUDENT ID",
+  "repo_url": "https://github.com/Berke111/chat-moderation-tr",
+  "video_url": "VIDEO LINK",
+  "failure_examples": [
+    {
+      "text": "Nezaketi eziklik, iyi niyeti kerizlik\nsanıyorlar. Herkes kalbi kadar.",
+      "gold": "offensive",
+      "pred": "clean (97%)",
+      "why": "Test-set tweet. Implicit insult with no target and\nno swear word; the model is confidently wrong."
+    },
+    {
+      "text": "seni öldürürüm",
+      "gold": "offensive",
+      "pred": "clean",
+      "why": "Typed live. A threat without profanity: the tweet\ncorpus has few examples of game-chat threats."
+    },
+    {
+      "text": "Harika oynadın kanka",
+      "gold": "clean",
+      "pred": "offensive (rule only)",
+      "why": "Rule baseline: a clean word is one edit away from a\nlexicon entry. The other models get it right."
+    }
+  ],
+  "limitations": [
+    "Domain shift: trained on tweets, used on game chat. Threats and game slang are under-represented.",
+    "Labels are subjective: many of the confident errors are implicit or sarcastic tweets annotators marked OFF.",
+    "Binary decision at a fixed 0.5 threshold; the whole message is masked instead of only the offending words.",
+    "Latency was measured on one laptop CPU with all cores free; a loaded server would be slower."
+  ],
+  "next_steps": [
+    "Collect and label real game-chat messages; fine-tune on them and tune the threshold per platform policy.",
+    "Knowledge distillation into a 4–6 layer student, then quantize it, to cut latency and size further.",
+    "Use the conversation context (previous messages) and mask only the offensive span."
+  ],
+  "ai_usage": [
+    "State here which AI tools you used and for which parts."
+  ]
+}

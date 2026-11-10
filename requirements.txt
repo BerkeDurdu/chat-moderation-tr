@@ -1,0 +1,15 @@
+# Python 3.11. For GPU training install torch first from https://pytorch.org (CUDA build);
+# the application and all latency measurements run on CPU.
+torch>=2.4
+transformers>=4.44
+scikit-learn==1.9.1
+gensim>=4.3
+onnx>=1.16
+onnxruntime>=1.19
+streamlit>=1.40
+pandas>=2.2
+numpy>=1.26
+joblib>=1.4
+huggingface_hub>=0.25
+matplotlib>=3.8
+reportlab>=4.2

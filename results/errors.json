@@ -1,0 +1,205 @@
+{
+  "int8_fp32_agreement": 0.9900793650793651,
+  "errors": [
+    {
+      "text": "O günler geçti canımıniçi, bir daha karşılaşmamak dileğiyle",
+      "gold": 1,
+      "p_offensive": 0.004044691566377878
+    },
+    {
+      "text": "8 kişi kaldı be yazıklar olsun size shshshshs",
+      "gold": 1,
+      "p_offensive": 0.00414340989664197
+    },
+    {
+      "text": "Sipammmmm yaa    Geldi hem laptopu aldı    Hem de beni esir aldı 😂😂",
+      "gold": 1,
+      "p_offensive": 0.004641570616513491
+    },
+    {
+      "text": "@USER yapram bende diyorum kı yeni sezon by17 imzalı vereyım sana çok istiyorsan :D",
+      "gold": 1,
+      "p_offensive": 0.005464312620460987
+    },
+    {
+      "text": "Çin'den ithal olunca ancak bu kadar olur diyorum",
+      "gold": 1,
+      "p_offensive": 0.005607543978840113
+    },
+    {
+      "text": "Tanışmak isteyen ve sohbet etmek isteyen var mı ?   İyi geceler",
+      "gold": 1,
+      "p_offensive": 0.006795188412070274
+    },
+    {
+      "text": "Bangtan askere gitse bile gruplarınız yine ilgi görmeyecek. Army yine Bangtanın eski şarkılarını dinliycek. Army’nin aradığı şey kalite bu da gruplarınızda olmadığına göre flop geldiniz floğ gideceksiniz @USER",
+      "gold": 1,
+      "p_offensive": 0.007000476587563753
+    },
+    {
+      "text": "Bir şirkette ayaklar baş olmaya başladı mı, tüymenin vakti gelmiş demektir..",
+      "gold": 1,
+      "p_offensive": 0.007009720895439386
+    },
+    {
+      "text": "Vay anasını ne büyük dertler hsgauahajhaqi",
+      "gold": 1,
+      "p_offensive": 0.007077852264046669
+    },
+    {
+      "text": "Eski sevgilimi Tinder’da göremem çünkü hornet kullanıyor. Djjdxj keşke şaka olsaydi:(",
+      "gold": 1,
+      "p_offensive": 0.0077794319950044155
+    },
+    {
+      "text": "@USER @USER Haci abine gonderecegin yorumu sayin Tanala gondermissiniz.😂😂Ne kullanmisin sabah sabah?Yoksa geceden kalma hasar mi var?",
+      "gold": 1,
+      "p_offensive": 0.008241068571805954
+    },
+    {
+      "text": "@USER Kamil koçtan aldığım otobüs bileti 2 kere iptal olunca ettiğim küfürler yerini buluyo galiba xksmcmwmcö",
+      "gold": 1,
+      "p_offensive": 0.008340084925293922
+    },
+    {
+      "text": "@USER Ya arkadaş nerde büyüttün onu da🔵",
+      "gold": 1,
+      "p_offensive": 0.009007769636809826
+    },
+    {
+      "text": "Senelerce doğruyum çalışkanım büyüklerimi saymak küçüklerimi korumak dedikte hani doğru adam hani çalışkan adam hani büyüğüne saygılı vatandaş??? Bunları papağan misali dile dolayacağınıza zihinlere kazıyın #OkullardaANDIMIZOkutulsun",
+      "gold": 1,
+      "p_offensive": 0.009025966748595238
+    },
+    {
+      "text": "@USER @USER merhaba efenfim.   orası doğru. yalnız der spigel \"das zeitalter der autokraten\" derken, reisicumhur \"dünyayı şekillendiren liderler\" yazıldı sanıyor! (:",
+      "gold": 1,
+      "p_offensive": 0.00918028224259615
+    },
+    {
+      "text": "@USER @USER Bencede,iyi bir ısırık sevginin en onemli göstergesidir,oozellikle popoya atılan",
+      "gold": 1,
+      "p_offensive": 0.00921301357448101
+    },
+    {
+      "text": "anlık seni istemiyorum isimli wp kitabı okuyorum kusmama ramak kaldı",
+      "gold": 1,
+      "p_offensive": 0.009912081994116306
+    },
+    {
+      "text": "#AdliEşitYasaİleAdaleteGüven   Önce haince içerde çürütülen canlarımız için geniş kapsamlı af sonra oy 8 milyon söz veriyor @USER @USER @USER @USER @USER @USER @USER",
+      "gold": 1,
+      "p_offensive": 0.010029072873294353
+    },
+    {
+      "text": "TRUMP ne demiş    Suriyeden kısa zaman içinde çıkacağız    #ProjeTerörÖrgütleri ne verdiğin sil da alıp DEFOL TRUMP",
+      "gold": 1,
+      "p_offensive": 0.010177148506045341
+    },
+    {
+      "text": "Değil unutmak acısı hafifleyenin kanı kurusun. #FıratYılmazÇakıroğlu",
+      "gold": 1,
+      "p_offensive": 0.01031341403722763
+    },
+    {
+      "text": "@USER @USER Paris gibi, şimdi hep çarşaflı dolu.",
+      "gold": 1,
+      "p_offensive": 0.010539255104959011
+    },
+    {
+      "text": "@USER Son dizisinden sonra biraz daha unutulsun. Hatta askere gitsin 2 sene gelmesin mümkünse.",
+      "gold": 1,
+      "p_offensive": 0.011292528361082077
+    },
+    {
+      "text": "@USER olgun kadın başka olur. Tercihim olgun kadınlar.",
+      "gold": 1,
+      "p_offensive": 0.011571776121854782
+    },
+    {
+      "text": "Bir ara ben ben ben furyası vardı ben şöyle severim ben öyle derlersi muhabbette şimdi de e yani nolacak herkes böyle herkes zaten şöyle yapıyor başladı sk gibi muhabbetlerde uyuz oluyorum",
+      "gold": 1,
+      "p_offensive": 0.011880971491336823
+    },
+    {
+      "text": "Merve fanlari kucuk daglari biz yarattik havasinda gibi gorunuyor hala.Merve’nin elenip bu kadar konusulmasi onun samimiyetinden veya ortaya koydugu saglam karakterden degil,uyanin sabah oldu guzel kardeslerim ahdkajakab #Survivor2018",
+      "gold": 1,
+      "p_offensive": 0.0124906525015831
+    },
+    {
+      "text": "Ay ben yine samimiyetsiz saatlerime geldim en iyisi yatmak",
+      "gold": 1,
+      "p_offensive": 0.012573589570820332
+    },
+    {
+      "text": "@USER Turksat abonesiyim.Hd yayın diye hd decoderi kakaladınız.1.kanal hariç HD yazan  tüm kanallarınız sd yayın  yapıyor😬😬Peşin ödediğim içi katlandım ama yeni sezonda ya Turksatta da tüm kanallarınız  ÇAKMA DEĞİL GERÇEKTEN HD olur.yoksa  işim OLMAZ",
+      "gold": 1,
+      "p_offensive": 0.013838917948305607
+    },
+    {
+      "text": "@USER Adam her yarışta lastiklerde sıkıntı var diye diye şampiyon oluyo her sene.. Pardon adam demişim.",
+      "gold": 1,
+      "p_offensive": 0.013846181333065033
+    },
+    {
+      "text": "@USER @USER @USER Manyak mısın bilader ben kaymak derken meşhur ya o bakımdan",
+      "gold": 1,
+      "p_offensive": 0.014424215070903301
+    },
+    {
+      "text": "Kurban olduğum Allahım şu erkekler musically çekmesin artık",
+      "gold": 1,
+      "p_offensive": 0.014658007770776749
+    },
+    {
+      "text": "Dünyaca ünlü Biyoloji öğretmeni Tuğçe Karaduman topuklu ayakkabılarıyla metroda.",
+      "gold": 1,
+      "p_offensive": 0.01504005677998066
+    },
+    {
+      "text": "oha yuh cus kac gundur sizi bensiz biraktigim icin sorryy😭😭😭😭",
+      "gold": 1,
+      "p_offensive": 0.015289121307432652
+    },
+    {
+      "text": "@USER Hayal kurmaya devam et benim shipim onaylı sen böyle laf et dur",
+      "gold": 1,
+      "p_offensive": 0.015593518503010273
+    },
+    {
+      "text": "@USER Yeeni yıla bak anasını satıyım6 Günündeeyiz 5 günü tatildiGeeldee seevmee böylee yılıafeerin yeeni yılafeerin",
+      "gold": 1,
+      "p_offensive": 0.015620478428900242
+    },
+    {
+      "text": "Murat'la yarışmak istemem diyen ama ilk oyunda onu seçen yandan çarklı Turbo yenildi   #Survivor2018 #MuratCeylan #HilMur",
+      "gold": 1,
+      "p_offensive": 0.01563887670636177
+    },
+    {
+      "text": "@USER bu kızın gerçek yüzünü görmeden sakın seni seviyorum demeyin sibsisnsonaoanisjsjsjkansks",
+      "gold": 1,
+      "p_offensive": 0.015928072854876518
+    },
+    {
+      "text": "Biz ayrımcılığa son için her platformda kadro istedik siz sözleşmelilerinde kendi arasında ayrımcılık çıkardınız bu Adalet değil #SözlesmeliyeAyrımsızKadro",
+      "gold": 1,
+      "p_offensive": 0.016369061544537544
+    },
+    {
+      "text": "@USER aşırı komikmiş kardeş ilk esprin mi",
+      "gold": 1,
+      "p_offensive": 0.016718745231628418
+    },
+    {
+      "text": "O işler işte öyle olmuyor  #TarihSiziAffetmeyecek",
+      "gold": 1,
+      "p_offensive": 0.01695287972688675
+    },
+    {
+      "text": "Ya siz niye böyle kafayı yediniz :(",
+      "gold": 1,
+      "p_offensive": 0.017982151359319687
+    }
+  ]
+}
