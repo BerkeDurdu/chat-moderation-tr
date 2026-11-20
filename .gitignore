@@ -7,4 +7,6 @@ models/
 # local, personal files
 slides/
 slides_config.json
+TESLIM/
 .*/
+!.streamlit/

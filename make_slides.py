@@ -258,7 +258,8 @@ box(487, 268, w, 150, "2 · Neural network – word2vec + feedforward net", [
     f"({b['w2v']['vocab']:,} words).",
     "Message vector = average of its word vectors.",
     "MLP 200 → 256 → 64 → 2, ReLU, dropout 0.3.",
-    "SGD (momentum 0.9, lr 0.05, cosine decay), 40 epochs, class-weighted cross-entropy, backpropagation.",
+    "SGD (momentum 0.9, lr 0.05, cosine decay), 40 epochs, class-weighted cross-entropy, backpropagation; "
+    "best epoch kept by validation macro-F1.",
     f"Validation macro-F1: {b['w2v']['val_f1']:.3f}",
 ], size=10.5)
 box(48, 98, w, 150, "3 · Transformer – BERTurk fine-tuned", [

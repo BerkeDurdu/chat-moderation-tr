@@ -16,7 +16,7 @@ with four models of increasing sophistication, and the application serves the la
 
 ## Setup
 
-Python 3.11.
+Requires Python 3.11 (64-bit). No GPU is needed to run the application.
 
 ```bash
 python -m venv .venv
@@ -31,8 +31,13 @@ python download_models.py         # trained weights from the Hugging Face Hub (~
 streamlit run app.py
 ```
 
-Type a message in the chat box. The side panel lets you switch between models and shows the
-response-time log; "Show all models side by side" compares all models on each message.
+The app opens at <http://localhost:8501>. Type a Turkish message in the chat box: it is labelled
+clean / offensive with a confidence, masked if offensive, and its response time is logged in the
+side panel. The side panel also switches the active model; "Show all models side by side" runs
+every model on each message. The default model is the INT8-quantized BERTurk.
+
+Try for example: `gg iyi oyundu herkese teşekkürler` (clean), `4ptal mısın sen saaaalak`
+(leetspeak + stretched letters, offensive).
 
 ## Reproduce the results from scratch (optional)
 

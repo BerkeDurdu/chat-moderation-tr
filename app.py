@@ -24,7 +24,13 @@ st.set_page_config(page_title="Chat Moderation", page_icon="🛡️", layout="wi
 
 @st.cache_resource(show_spinner="Loading model...")
 def load(key: str):
-    model = REGISTRY[key]()
+    try:
+        model = REGISTRY[key]()
+    except (FileNotFoundError, OSError) as exc:
+        st.error(f"Model files for **{REGISTRY[key].name}** were not found in `models/`.\n\n"
+                 "Run `python download_models.py` (or `python train_all.py`) and restart the app.")
+        st.caption(str(exc))
+        st.stop()
     model.prob("ısınma mesajı")            # warm-up so the first real message is not slow
     return model
 
