@@ -39,6 +39,18 @@ every model on each message. The default model is the INT8-quantized BERTurk.
 Try for example: `gg iyi oyundu herkese teşekkürler` (clean), `4ptal mısın sen saaaalak`
 (leetspeak + stretched letters, offensive).
 
+### Alternative: Docker (Windows, macOS, Linux)
+
+With [Docker](https://docs.docker.com/get-docker/) installed, no Python setup is needed; the image
+installs the pinned packages (CPU-only PyTorch) and downloads the trained weights itself:
+
+```bash
+docker build -t chat-moderation-tr .
+docker run --rm -p 8501:8501 chat-moderation-tr
+```
+
+Then open <http://localhost:8501>. The first build downloads about 2 GB and takes a few minutes.
+
 ## Reproduce the results from scratch (optional)
 
 ```bash

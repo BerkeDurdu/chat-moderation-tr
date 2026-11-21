@@ -1,0 +1,9 @@
+.git
+.venv
+**/__pycache__
+data
+models
+results
+slides
+TESLIM
+slides_config.json
