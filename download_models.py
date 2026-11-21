@@ -12,7 +12,7 @@ from pathlib import Path
 
 from huggingface_hub import HfApi, snapshot_download
 
-HF_REPO = "USERNAME/chat-moderation-tr"
+HF_REPO = "Berke111/chat-moderation-tr"
 REPO_NAME = "chat-moderation-tr"
 ROOT = Path(__file__).resolve().parent
 MODELS = ROOT / "models"
