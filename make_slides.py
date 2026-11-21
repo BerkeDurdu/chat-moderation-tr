@@ -117,7 +117,7 @@ def table(data, x, y_top, col_widths, size=11, highlight_row=None, row_h=None):
 
 def f1(k):  return f"{rows[k]['macro_f1']:.3f}"
 def ms(k):  return f"{rows[k]['latency_ms_mean']:.1f}"
-def p95(k): return f"{rows[k]['latency_ms_p95']:.1f}"
+def p95(k): return f"{rows[k]['latency_ms_p95']:.2f}"
 def mb(k):  return f"{rows[k]['size_mb']:.1f}"
 
 
@@ -179,13 +179,16 @@ y = table([["Split", "Messages", "Offensive", "Used for"],
            ["Validation", f"{t['val']['n']:,}", f"{t['val']['off']:.1%}", "hyper-parameters, early stopping (stratified 10% of train, seed 42)"],
            ["Test", f"{t['test']['n']:,}", f"{t['test']['off']:.1%}", "official held-out test set – reported numbers only"]],
           48, y - 6, [110, 100, 100, 554], size=11.5)
-y = text(48, y - 28, "Preprocessing (regex, src/textnorm.py) – identical at training time and in the app", 15, "B", TEAL)
+y = text(48, y - 28, "Preprocessing (regex, src/textnorm.py) – shared by every model, the evaluation and the app", 15, "B", TEAL)
 bullets(48, y - 4, [
     "Remove URLs, replace @mentions by a placeholder; Turkish-aware lower-casing (I → ı, İ → i).",
     "De-leetspeak inside words (0→o, 1→i, 3→e, 4→a, 5→s, 7→t, $→s); real numbers such as “100lerce” are kept.",
     "Collapse letters repeated 3+ times (saaaalak → salak). ASCII-folding (ş → s) for the lexicon matcher.",
+    "Expand abbreviations: shorthands (aq, amk, o.ç) and vowel-dropped words (orsp → orospu, sktr → siktir).",
     "BERTurk gets the same cleaning but keeps the original case (it is a cased model).",
-], size=13)
+    "Note: abbreviation expansion was added after training (models trained without it); "
+    "all test numbers are measured with it, exactly as the app runs.",
+], size=12.5, gap=4)
 c.showPage()
 
 # ------------------------------------------------------------------ 4 · architecture
@@ -193,7 +196,7 @@ header("Development · Architecture", "Architecture: from a typed message to a m
 top = H - 150
 box(40, top - 20, 120, 62, "User", ["types a chat message in the browser"])
 box(190, top - 20, 150, 62, "Streamlit UI", ["app.py · st.chat_input", "model switch (side panel)"])
-box(370, top - 20, 220, 62, "Preprocessing (regex)", ["src/textnorm.py · URLs, mentions,", "leetspeak, repeated letters, Turkish I/İ"])
+box(370, top - 20, 300, 62, "Preprocessing (regex)", ["src/textnorm.py · URLs, mentions, leetspeak,", "repeated letters, Turkish I/İ, abbreviations"])
 arrow(160, top + 11, 190, top + 11)
 arrow(340, top + 11, 370, top + 11)
 
@@ -210,8 +213,8 @@ for i, (title, lines, fill) in enumerate(models):
 c.setStrokeColor(NAVY)
 c.setLineWidth(1.3)
 c.line(40 + mw / 2, my + mh + 22, 40 + 4 * (mw + 10) + mw / 2, my + mh + 22)
-c.line(480, top - 20, 480, my + mh + 22)
-text(492, top - 36, "normalized text → selected model (or all five, side by side)", 9.5, color=GREY)
+c.line(520, top - 20, 520, my + mh + 22)
+text(532, top - 36, "normalized text → selected model (or all five, side by side)", 9.5, color=GREY)
 
 py = my - 112
 c.line(40 + mw / 2, my - 18, 40 + 4 * (mw + 10) + mw / 2, my - 18)
@@ -333,7 +336,7 @@ bullets(48, H - 124, cfg["conclusions"] if cfg.get("conclusions") else [
     f"The rule baseline is the weakest (macro-F1 {f1('lexicon')}): it only fires on known words.",
     f"Quantization gives most of BERT’s quality at a fraction of the cost: {size_ratio:.1f}× smaller, "
     f"{speedup:.1f}× faster, macro-F1 {f1('bert_int8')} ({-f1_drop:+.4f}). "
-    f"p95 latency {p95('bert_int8')} ms vs. {p95('bert_fp32')} ms for PyTorch FP32, against a {meta['budget_ms']:.0f} ms budget.",
+    f"p95 latency {p95('bert_int8')} ms – far inside the {meta['budget_ms']:.0f} ms budget, while PyTorch FP32 sits right at the limit ({p95('bert_fp32')} ms).",
     f"The neural net ({f1('w2v_ffn')}) does not beat tf-idf ({f1('tfidf')}): averaging word2vec vectors loses word order "
     "and sub-word evidence that character n-grams keep – "
     "a neural network is not automatically better than a strong classical baseline.",

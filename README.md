@@ -56,15 +56,18 @@ All models are evaluated on the same held-out test set (measured by `src/evaluat
 
 | Model | Precision | Macro-F1 | Accuracy | Size (MB) | Latency mean (ms) | Latency p95 (ms) | <= 50 ms |
 |---|---|---|---|---|---|---|---|
-| Lexicon + edit distance (rule) | - | 0.659 | 0.786 | 0.0 | 0.04 | 0.08 | yes |
-| tf-idf + logistic regression | FP64 | 0.765 | 0.852 | 2.5 | 1.58 | 2.36 | yes |
-| word2vec + feedforward net | FP32 | 0.699 | 0.787 | 24.0 | 0.21 | 0.40 | yes |
-| BERTurk fine-tuned (PyTorch) | FP32 | 0.816 | 0.889 | 442.5 | 33.21 | 50.98 | no |
-| BERTurk fine-tuned (ONNX Runtime) | FP32 | 0.816 | 0.889 | 442.7 | 23.59 | 37.73 | yes |
-| BERTurk quantized (ONNX Runtime) | INT8 | 0.815 | 0.889 | 111.4 | 11.22 | 20.83 | yes |
+| Lexicon + edit distance (rule) | - | 0.687 | 0.798 | 0.0 | 0.07 | 0.15 | yes |
+| tf-idf + logistic regression | FP64 | 0.766 | 0.853 | 2.5 | 2.22 | 4.14 | yes |
+| word2vec + feedforward net | FP32 | 0.702 | 0.789 | 24.0 | 0.36 | 0.59 | yes |
+| BERTurk fine-tuned (PyTorch) | FP32 | 0.816 | 0.889 | 442.5 | 31.68 | 49.99 | yes |
+| BERTurk fine-tuned (ONNX Runtime) | FP32 | 0.816 | 0.889 | 442.7 | 20.29 | 32.20 | yes |
+| BERTurk quantized (ONNX Runtime) | INT8 | 0.816 | 0.889 | 111.4 | 11.04 | 18.80 | yes |
 
 Test set: OffensEval-TR 2020 official test set (3528 messages, 20.3% offensive).
 Latency: one message at a time, mean over 300 messages, on 13th Gen Intel(R) Core(TM) i5-13500H, 16 logical cores, CPU only.
+
+The abbreviation expansion in `src/textnorm.py` was added after the models were trained,
+so the models were trained without it; all numbers above are measured with it, exactly as the app runs.
 
 Latency budget: p95 ≤ 50 ms per message on CPU. The quantized model is 4× smaller and 3× faster than
 the PyTorch FP32 model with practically the same macro-F1.
@@ -76,7 +79,8 @@ user message ──> Streamlit UI (app.py)
                     │
                     ▼
         regex normalization (src/textnorm.py)
-        URLs, @mentions, leetspeak, repeated letters, Turkish I/İ
+        URLs, @mentions, leetspeak, repeated letters, Turkish I/İ,
+        abbreviations (orsp → orospu, aq/amk, o.ç)
                     │
                     ▼   selected model (or all, side by side)      src/models.py
    ┌────────────┬───────────────┬─────────────────┬───────────────┬──────────────────────┐
