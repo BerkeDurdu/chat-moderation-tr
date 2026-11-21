@@ -57,8 +57,6 @@ with st.sidebar:
                        format_func=lambda k: f"{REGISTRY[k].name} [{REGISTRY[k].precision}]")
     compare = st.toggle("Show all models side by side", value=True)
     st.caption(f"Latency budget: {BUDGET_MS:.0f} ms per message, CPU only.")
-    for k in (APP_MODELS if compare else [key]):     # load before the first message arrives
-        load(k)
 
     st.header("Response time log")
     if st.session_state.log:
@@ -77,6 +75,14 @@ with st.sidebar:
 # ---------------------------------------------------------------- chat
 st.title("🛡️ Real-Time Chat Moderation")
 st.caption("Turkish offensive-language filter · classical baseline → neural net → BERTurk → quantized BERTurk")
+
+# load (and warm up) the models before the first message arrives; only slow on the first start
+_needed = [k for k in (APP_MODELS if compare else [key]) if k not in st.session_state.setdefault("loaded", set())]
+if _needed:
+    with st.spinner("Loading the models – only on the first start, about 20 seconds..."):
+        for k in _needed:
+            load(k)
+            st.session_state.loaded.add(k)
 
 for item in st.session_state.chat:
     with st.chat_message("user"):
