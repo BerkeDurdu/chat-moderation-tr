@@ -25,6 +25,7 @@ PALE_TEAL = colors.HexColor("#d5efec")
 _fonts = Path(matplotlib.get_data_path()) / "fonts" / "ttf"
 pdfmetrics.registerFont(TTFont("R", str(_fonts / "DejaVuSans.ttf")))
 pdfmetrics.registerFont(TTFont("B", str(_fonts / "DejaVuSans-Bold.ttf")))
+pdfmetrics.registerFont(TTFont("M", str(_fonts / "DejaVuSansMono.ttf")))
 
 cfg = json.loads((ROOT / "slides_config.json").read_text(encoding="utf-8"))
 res = json.loads((ROOT / "results" / "results.json").read_text(encoding="utf-8"))
@@ -151,6 +152,16 @@ for label, value in (("Student", f"{cfg['name']} · {cfg['student_id']}"),
     text(60, y, label, 12, "B", colors.HexColor("#5eead4"))
     text(170, y, value, 13, color=colors.white)
     y -= 30
+# how to run: Docker works the same on Windows, macOS and Linux
+text(60, y, "Run it", 12, "B", colors.HexColor("#5eead4"))
+c.setFillColor(colors.HexColor("#22325a"))
+c.roundRect(165, y - 72, 640, 88, 5, stroke=0, fill=1)
+for i, cmd in enumerate(("git clone " + cfg["repo_url"], "cd chat-moderation-tr",
+                         "docker build -t chat-moderation-tr .",
+                         "docker run --rm -p 8501:8501 chat-moderation-tr   → http://localhost:8501")):
+    text(175, y - i * 20, cmd, 10.5, "M", colors.white)
+text(165, y - 92, "Without Docker: pip install -r requirements.txt · python download_models.py · streamlit run app.py "
+     "(Python 3.11, see README)", 9.5, color=colors.HexColor("#b8c4d6"))
 c.showPage()
 
 # ------------------------------------------------------------------ 2 · introduction
@@ -336,7 +347,68 @@ y = bullets(48, y - 30, [
 ], width=860, size=12.5)
 c.showPage()
 
-# ------------------------------------------------------------------ 9 · conclusion
+
+# ------------------------------------------------------------------ 9 · trade-off chart
+def tradeoff_chart(path):
+    """Macro-F1 vs. p95 latency (log x) for every measured model, budget line, deployed model highlighted."""
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 11})
+    navy, teal, grey, grid = "#14213d", "#0f766e", "#5b6472", "#dfe5eb"
+    labels = {"lexicon": "Rule: lexicon", "tfidf": "tf-idf + LR", "w2v_ffn": "word2vec + FFN",
+              "bert_fp32": "BERTurk FP32 (PyTorch)", "bert_onnx_fp32": "BERTurk FP32 (ONNX)",
+              "bert_int8": "BERTurk INT8 (ONNX) – in the app"}
+    offsets = {"lexicon": (8, -14), "tfidf": (8, 0), "w2v_ffn": (8, 12), "bert_fp32": (-4, -40),
+               "bert_onnx_fp32": (-20, -14), "bert_int8": (-12, 0)}
+    fig, ax = plt.subplots(figsize=(6.4, 4.1), dpi=220)
+    ax.axvline(meta["budget_ms"], color=grey, lw=1.2, ls=(0, (4, 3)), zorder=1)
+    ax.text(meta["budget_ms"] * 0.93, 0.668, f"budget {meta['budget_ms']:.0f} ms", ha="right", va="bottom",
+            color=grey, fontsize=9.5)
+    for k, name in labels.items():
+        r = rows[k]
+        x, y, hi = r["latency_ms_p95"], r["macro_f1"], k == "bert_int8"
+        ax.scatter(x, y, s=95 if hi else 60, color=teal if hi else navy, edgecolor="white", linewidth=2, zorder=3)
+        dx, dy = offsets[k]
+        size = f"{r['size_mb']:.0f} MB" if r["size_mb"] >= 1 else "< 0.01 MB"
+        ax.annotate(f"{name}\n{y:.3f} · {x:.2f} ms · {size}", (x, y), xytext=(dx, dy), textcoords="offset points",
+                    ha="right" if dx < 0 else "left", va="center", fontsize=8.6,
+                    color=navy, fontweight="bold" if hi else "normal",
+                    arrowprops=dict(arrowstyle="-", color="#aab4c0", lw=0.8, shrinkA=0, shrinkB=5)
+                    if k in ("bert_fp32", "bert_onnx_fp32") else None)
+    ax.set_xscale("log")
+    ax.set_xlim(0.05, 120)
+    ax.set_ylim(0.665, 0.84)
+    ax.set_xlabel("p95 latency per message (ms, log scale) – lower is better", color=grey)
+    ax.set_ylabel("macro-F1 on the test set – higher is better", color=grey)
+    ax.grid(True, color=grid, lw=0.8, zorder=0)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    for s in ("left", "bottom"):
+        ax.spines[s].set_color("#c5ced8")
+    ax.tick_params(colors=grey)
+    fig.tight_layout()
+    fig.savefig(path, facecolor="white")
+    plt.close(fig)
+
+
+chart = ROOT / "slides" / "tradeoff.png"
+tradeoff_chart(chart)
+header("Development · Results", "Quality vs. speed: where each model sits")
+c.drawImage(str(chart), 40, 62, width=560, height=560 * 4.1 / 6.4)
+bullets(625, H - 132, [
+    "Up and to the left is better. Only the BERTurk models pass 0.8 macro-F1.",
+    f"Quantization moves BERTurk left without moving it down: p95 {p95('bert_fp32')} → {p95('bert_int8')} ms, "
+    f"macro-F1 {f1('bert_fp32')} → {f1('bert_int8')}.",
+    f"Every model is inside the {meta['budget_ms']:.0f} ms budget on this laptop; the INT8 model leaves the most "
+    "head-room among the Transformers.",
+    f"The small models have {rows['bert_int8']['latency_ms_p95'] / rows['tfidf']['latency_ms_p95']:.0f}–"
+    f"{rows['bert_int8']['latency_ms_p95'] / rows['lexicon']['latency_ms_p95']:.0f}× lower p95 than the INT8 model "
+    f"but lose {rows['bert_int8']['macro_f1'] - rows['tfidf']['macro_f1']:.2f}–"
+    f"{rows['bert_int8']['macro_f1'] - rows['lexicon']['macro_f1']:.2f} macro-F1.",
+], size=12.5, width=300, gap=10)
+c.showPage()
+
+# ------------------------------------------------------------------ 10 · conclusion
 header("Conclusion", "What the comparison showed")
 bullets(48, H - 124, cfg["conclusions"] if cfg.get("conclusions") else [
     f"Quality: BERTurk wins clearly – macro-F1 {f1('bert_int8')} (INT8) / {f1('bert_fp32')} (FP32) vs. {f1('tfidf')} "
