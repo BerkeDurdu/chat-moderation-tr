@@ -7,26 +7,26 @@
     {
       "text": "Nezaketi eziklik, iyi niyeti kerizlik\nsanıyorlar. Herkes kalbi kadar.",
       "gold": "offensive",
-      "pred": "clean (97%)",
+      "pred": "clean (99%)",
       "why": "Test-set tweet. Implicit insult with no target and\nno swear word; the model is confidently wrong."
     },
     {
       "text": "seni öldürürüm",
       "gold": "offensive",
-      "pred": "clean",
+      "pred": "clean (96%)",
       "why": "Typed live. A threat without profanity: the tweet\ncorpus has few examples of game-chat threats."
     },
     {
-      "text": "Harika oynadın kanka",
+      "text": "@USER Eric Cantona da gelirmi ama\nsikolsu çok isterim.",
       "gold": "clean",
-      "pred": "offensive (rule only)",
-      "why": "Rule baseline: a clean word is one edit away from a\nlexicon entry. The other models get it right."
+      "pred": "offensive (96%)",
+      "why": "Test-set tweet. A harmless word starts like a swear\nword (sik…); the model reacts to the surface form."
     }
   ],
   "limitations": [
     "Domain shift: trained on tweets, used on game chat. Threats and game slang are under-represented.",
     "Labels are subjective: many of the confident errors are implicit or sarcastic tweets annotators marked OFF.",
-    "Binary decision at a fixed 0.5 threshold; the whole message is masked instead of only the offending words.",
+    "One binary decision per message with a single threshold (tuned on validation, not on platform policy); the whole message is masked instead of only the offending words.",
     "Latency was measured on one laptop CPU with all cores free; a loaded server would be slower."
   ],
   "next_steps": [

@@ -32,6 +32,13 @@ err = json.loads((ROOT / "results" / "errors.json").read_text(encoding="utf-8"))
 meta, rows = res["meta"], {r["key"]: r for r in res["rows"]}
 LADDER = ["tfidf", "w2v_ffn", "bert_fp32", "bert_int8"]
 train_info = json.loads((ROOT / "results" / "training.json").read_text(encoding="utf-8"))
+BERT = train_info["bert"]
+BASE_SHORT = BERT["base"].split("/")[-1]                     # e.g. bert-base-turkish-128k-cased
+THR = train_info.get("thresholds", {})
+
+
+def thr(k):
+    return f"{THR.get(k, 0.5):.2f}"
 
 (ROOT / "slides").mkdir(exist_ok=True)
 c = canvas.Canvas(str(ROOT / "slides" / "presentation.pdf"), pagesize=(W, H))
@@ -186,9 +193,7 @@ bullets(48, y - 4, [
     "Collapse letters repeated 3+ times (saaaalak → salak). ASCII-folding (ş → s) for the lexicon matcher.",
     "Expand abbreviations: shorthands (aq, amk, o.ç) and vowel-dropped words (orsp → orospu, sktr → siktir).",
     "BERTurk gets the same cleaning but keeps the original case (it is a cased model).",
-    "Note: abbreviation expansion was added after training (models trained without it); "
-    "all test numbers are measured with it, exactly as the app runs.",
-], size=12.5, gap=4)
+], size=13)
 c.showPage()
 
 # ------------------------------------------------------------------ 4 · architecture
@@ -204,7 +209,7 @@ my, mh, mw = top - 150, 86, 168
 models = [("Rule baseline", ["lexicon mined from train +", "edit distance ≤ 1", "src/lexicon.py"], LIGHT),
           ("Classical · tf-idf + LR", ["word 1-2 + char 2-5 grams", "scikit-learn · FP64"], LIGHT),
           ("Neural · word2vec + FFN", ["own skip-gram, averaged →", "MLP 200-256-64-2", "PyTorch · FP32"], LIGHT),
-          ("Transformer · BERTurk", ["bert-base-turkish-cased", "fine-tuned, WordPiece", "PyTorch · FP32"], LIGHT),
+          ("Transformer · BERTurk", [BASE_SHORT, "fine-tuned, WordPiece", "PyTorch · FP32"], LIGHT),
           ("Quantized BERTurk", ["dynamic INT8 weights", "ONNX Runtime · INT8", "DEFAULT IN THE APP"], PALE_TEAL)]
 for i, (title, lines, fill) in enumerate(models):
     x = 40 + i * (mw + 10)
@@ -223,12 +228,12 @@ for i in range(5):
     c.line(x, my, x, my - 18)
 arrow(300, my - 18, 300, py + 62)
 text(312, my - 36, "P(offensive)", 9.5, color=GREY)
-box(190, py, 220, 62, "Post-processing", ["threshold 0.5 → label + confidence", "mask flagged text · stop the timer"])
+box(190, py, 220, 62, "Post-processing", ["threshold (tuned on validation) →", "label + confidence · mask · stop timer"])
 box(440, py, 250, 62, "Streamlit UI (output)", ["chat bubble: label, confidence, ms", "side panel: response-time log · comparison table"])
 arrow(410, py + 31, 440, py + 31)
 box(720, py, 200, 62, "Where it runs", ["one Python process, CPU only", meta["hardware"].split(",")[0][:38]], colors.white)
 text(40, 62, "Offline (train_all.py): OffensEval-TR → train_classical · train_w2v_ffn · train_bert (GPU) → quantize "
-     "(ONNX export → INT8) → evaluate (same test set, CPU).", 10, color=GREY, width=880)
+     "(ONNX export → INT8) → tune_thresholds (validation) → evaluate (same test set, CPU).", 10, color=GREY, width=880)
 c.showPage()
 
 # ------------------------------------------------------------------ 5 · technique map
@@ -265,12 +270,15 @@ box(487, 268, w, 150, "2 · Neural network – word2vec + feedforward net", [
     "best epoch kept by validation macro-F1.",
     f"Validation macro-F1: {b['w2v']['val_f1']:.3f}",
 ], size=10.5)
+cands = " vs. ".join(f"{c['base'].split('/')[-1].replace('bert-base-turkish-', '')} {c['val_f1']:.3f}"
+                     for c in BERT["candidates"])
 box(48, 98, w, 150, "3 · Transformer – BERTurk fine-tuned", [
-    "dbmdz/bert-base-turkish-cased: 12 self-attention layers, 110 M parameters, WordPiece tokenizer.",
-    "New classification head on [CLS]; all layers fine-tuned.",
-    "AdamW, lr 3e-5, linear warm-up 10%, batch 32, max 64 tokens, 3 epochs, mixed precision.",
-    f"Trained on {b['bert']['device']}; best epoch kept by validation macro-F1.",
-    f"Validation macro-F1: {b['bert']['val_f1']:.3f}",
+    f"{BERT['base']}: 12 self-attention layers, {BERT['params_m']} M parameters, "
+    f"WordPiece vocabulary of {BERT['vocab'] // 1000}k.",
+    "New classification head on [CLS]; all layers fine-tuned. AdamW, lr 3e-5, warm-up 10%, batch 32, "
+    "max 64 tokens, mixed precision, up to 4 epochs (best epoch by validation).",
+    f"Two BERTurk checkpoints fine-tuned on {BERT['device']}; picked on validation macro-F1 ({cands}).",
+    f"Validation macro-F1: {BERT['val_f1']:.3f}",
 ], size=10.5)
 box(487, 98, w, 150, "4 · Quantized Transformer – BERTurk INT8", [
     "The fine-tuned model from step 3, exported to ONNX (opset 17).",
@@ -278,8 +286,9 @@ box(487, 98, w, 150, "4 · Quantized Transformer – BERTurk INT8", [
     "No retraining and no calibration data.",
     f"{mb('bert_fp32')} MB → {mb('bert_int8')} MB.  This is the model the application runs.",
 ], PALE_TEAL, TEAL, size=10.5)
-text(48, 70, "All four are evaluated on the same official test set; model selection used the validation split only.",
-     11, color=GREY)
+text(48, 70, "Decision thresholds were also chosen on the validation split (macro-F1): "
+     f"tf-idf {thr('tfidf')}, FFN {thr('w2v_ffn')}, BERTurk {thr('bert_fp32')}, BERTurk INT8 {thr('bert_int8')}; "
+     "the rule baseline keeps 0.50. The test set was used only for the final numbers.", 10.5, color=GREY, width=870)
 c.showPage()
 
 # ------------------------------------------------------------------ 7 · quantization
@@ -306,15 +315,15 @@ c.showPage()
 
 # ------------------------------------------------------------------ 8 · results
 header("Development · Results", "Results: four models, one test set")
-data = [["Model", "Precision", "Macro-F1", "Accuracy", "Size (MB)", "Latency" + chr(10) + "mean (ms)", "Latency" + chr(10) + "p95 (ms)"]]
+data = [["Model", "Precision", "Thresh.", "Macro-F1", "Accuracy", "Size (MB)", "Latency" + chr(10) + "mean (ms)", "Latency" + chr(10) + "p95 (ms)"]]
 names = {"lexicon": "Rule: lexicon + edit distance", "tfidf": "1 · Classical: tf-idf + log. regression",
          "w2v_ffn": "2 · Neural net: word2vec + FFN", "bert_fp32": "3 · Transformer: BERTurk (PyTorch)",
          "bert_int8": "4 · Quantized Transformer: BERTurk"}
 for k in ["lexicon"] + LADDER:
     r = rows[k]
-    data.append([names[k], r["precision"], f"{r['macro_f1']:.3f}", f"{r['accuracy']:.3f}", f"{r['size_mb']:.1f}"
+    data.append([names[k], r["precision"], f"{r.get('threshold', 0.5):.2f}", f"{r['macro_f1']:.3f}", f"{r['accuracy']:.3f}", f"{r['size_mb']:.1f}"
                  if r["size_mb"] >= 0.1 else f"{r['size_mb']:.2f}", f"{r['latency_ms_mean']:.2f}", f"{r['latency_ms_p95']:.2f}"])
-y = table(data, 48, H - 112, [290, 80, 90, 90, 90, 122, 112], size=12, highlight_row=5)
+y = table(data, 48, H - 112, [270, 76, 70, 82, 84, 84, 104, 104], size=11.5, highlight_row=5)
 y = bullets(48, y - 30, [
     f"Test set: {meta['test_set']}, {meta['n_test']:,} messages, {meta['offensive_share']:.1%} offensive – "
     "identical for every row, never used for training or tuning.",
@@ -322,30 +331,34 @@ y = bullets(48, y - 30, [
     "different test messages after warm-up.",
     f"Hardware: {meta['hardware']}. No GPU is used at inference.",
     "Size: the file(s) the app has to load (tf-idf: vectorizers + weights; FFN: embeddings + MLP; BERT: weights).",
-    "The first row is the extra rule baseline required for Area B; rows 1–4 are the model ladder.",
+    "Thresholds were chosen on the validation split. The first row is the extra rule baseline required for "
+    "Area B; rows 1–4 are the model ladder.",
 ], width=860, size=12.5)
 c.showPage()
 
 # ------------------------------------------------------------------ 9 · conclusion
 header("Conclusion", "What the comparison showed")
 bullets(48, H - 124, cfg["conclusions"] if cfg.get("conclusions") else [
-    f"Quality: BERTurk wins clearly – macro-F1 {f1('bert_fp32')} vs. {f1('tfidf')} (tf-idf) and {f1('w2v_ffn')} "
-    "(word2vec + FFN). Context matters: most offensive tweets contain no swear word at all.",
+    f"Quality: BERTurk wins clearly – macro-F1 {f1('bert_int8')} (INT8) / {f1('bert_fp32')} (FP32) vs. {f1('tfidf')} "
+    f"(tf-idf) and {f1('w2v_ffn')} (word2vec + FFN). Context matters: many offensive tweets contain no swear word.",
     f"Speed and size: the small models win by orders of magnitude ({ms('tfidf')} ms / {ms('w2v_ffn')} ms per message, "
     f"{mb('tfidf')} / {mb('w2v_ffn')} MB). If only a tiny, very fast model is allowed, tf-idf is the one to pick.",
     f"The rule baseline is the weakest (macro-F1 {f1('lexicon')}): it only fires on known words.",
-    f"Quantization gives most of BERT’s quality at a fraction of the cost: {size_ratio:.1f}× smaller, "
-    f"{speedup:.1f}× faster, macro-F1 {f1('bert_int8')} ({-f1_drop:+.4f}). "
-    f"p95 latency {p95('bert_int8')} ms – far inside the {meta['budget_ms']:.0f} ms budget, while PyTorch FP32 sits right at the limit ({p95('bert_fp32')} ms).",
+    f"Quantization costs no quality here: {size_ratio:.1f}× smaller, {speedup:.1f}× faster, macro-F1 "
+    f"{f1('bert_int8')} vs. {f1('bert_fp32')} (each with its own validation-tuned threshold; a gap this small is "
+    f"within noise). p95 latency {p95('bert_int8')} ms vs. {p95('bert_fp32')} ms for PyTorch FP32 "
+    f"({meta['budget_ms']:.0f} ms budget).",
+    f"Model selection on validation: the 32k-vocabulary BERTurk beat the larger 128k one, and a validation gain "
+    f"does not always carry over to the test set – tuning must never look at the test set.",
     f"The neural net ({f1('w2v_ffn')}) does not beat tf-idf ({f1('tfidf')}): averaging word2vec vectors loses word order "
     "and sub-word evidence that character n-grams keep – "
     "a neural network is not automatically better than a strong classical baseline.",
-], width=860, size=14, gap=12)
+], width=860, size=13, gap=9)
 c.showPage()
 
 # ------------------------------------------------------------------ 10 · limitations
 header("Conclusion", "Limitations, failure examples and next steps")
-y = text(48, H - 118, "Failure examples (real outputs; rows 1–2 are the deployed INT8 model)", 14, "B", TEAL)
+y = text(48, H - 118, "Failure examples of the deployed INT8 model (real outputs)", 14, "B", TEAL)
 data = [["Message", "Gold", "Predicted", "Why it fails"]]
 for e in cfg["failure_examples"]:
     data.append([e["text"], e["gold"], e["pred"], e["why"]])
@@ -360,7 +373,7 @@ c.showPage()
 header("Conclusion", "AI usage statement")
 y = bullets(48, H - 124, cfg["ai_usage"], width=860, size=14, gap=12)
 text(48, 70, "Data: Çöltekin, Ç. (2020). A Corpus of Turkish Offensive Language on Social Media. LREC 2020.  "
-     "Model: dbmdz/bert-base-turkish-cased (BERTurk, Stefan Schweter).", 10, color=GREY, width=860)
+     f"Model: {BERT['base']} (BERTurk, Stefan Schweter).", 10, color=GREY, width=860)
 c.showPage()
 c.save()
 print(f"wrote slides/presentation.pdf ({page} slides)")

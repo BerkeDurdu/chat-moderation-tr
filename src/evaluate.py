@@ -13,7 +13,7 @@ import numpy as np
 from sklearn.metrics import accuracy_score, f1_score, precision_recall_fscore_support
 
 from .data import RESULT_DIR, load_splits
-from .models import REGISTRY
+from .models import REGISTRY, get
 
 N_LATENCY, WARMUP, BUDGET_MS = 300, 20, 50.0
 
@@ -35,11 +35,12 @@ def main():
     lat_texts = [texts[i] for i in rng.choice(len(texts), N_LATENCY, replace=False)]
 
     rows, probs = [], {}
-    for key, cls in REGISTRY.items():
-        model = cls()
+    thr = {}
+    for key in REGISTRY:
+        model = get(key)
         p = np.array([model.prob(t) for t in texts])
-        pred = (p >= 0.5).astype(int)
-        probs[key] = p
+        pred = (p >= model.threshold).astype(int)
+        probs[key], thr[key] = p, model.threshold
         for t in lat_texts[:WARMUP]:
             model.prob(t)
         times = []
@@ -49,7 +50,7 @@ def main():
             times.append((time.perf_counter() - t0) * 1000)
         prec, rec, f1_off, _ = precision_recall_fscore_support(gold, pred, average="binary", zero_division=0)
         rows.append({
-            "key": key, "model": model.name, "precision": model.precision,
+            "key": key, "model": model.name, "precision": model.precision, "threshold": model.threshold,
             "macro_f1": f1_score(gold, pred, average="macro"),
             "accuracy": accuracy_score(gold, pred),
             "off_precision": prec, "off_recall": rec, "off_f1": f1_off,
@@ -81,10 +82,12 @@ def main():
 
     # failure examples of the deployed (quantized) model, most confident mistakes first
     p = probs["bert_int8"]
-    wrong = np.where((p >= 0.5).astype(int) != gold)[0]
-    wrong = sorted(wrong, key=lambda i: -abs(p[i] - 0.5))[:40]
+    t = thr["bert_int8"]
+    wrong = np.where((p >= t).astype(int) != gold)[0]
+    wrong = sorted(wrong, key=lambda i: -abs(p[i] - t))[:40]
     errors = [{"text": texts[i], "gold": int(gold[i]), "p_offensive": float(p[i])} for i in wrong]
-    agree = float(((probs["bert_int8"] >= 0.5) == (probs["bert_onnx_fp32"] >= 0.5)).mean())
+    agree = float(((probs["bert_int8"] >= thr["bert_int8"])
+                   == (probs["bert_onnx_fp32"] >= thr["bert_onnx_fp32"])).mean())
     (RESULT_DIR / "errors.json").write_text(
         json.dumps({"int8_fp32_agreement": agree, "errors": errors}, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"INT8 vs FP32 prediction agreement: {agree:.2%}")

@@ -12,7 +12,7 @@ import time
 import pandas as pd
 import streamlit as st
 
-from src.models import REGISTRY
+from src.models import REGISTRY, get
 from src.textnorm import normalize
 
 BUDGET_MS = 50.0
@@ -25,7 +25,7 @@ st.set_page_config(page_title="Chat Moderation", page_icon="🛡️", layout="wi
 @st.cache_resource(show_spinner="Loading model...")
 def load(key: str):
     try:
-        model = REGISTRY[key]()
+        model = get(key)
     except (FileNotFoundError, OSError) as exc:
         st.error(f"Model files for **{REGISTRY[key].name}** were not found in `models/`.\n\n"
                  "Run `python download_models.py` (or `python train_all.py`) and restart the app.")
@@ -40,7 +40,8 @@ def classify(key: str, text: str):
     t0 = time.perf_counter()
     p = model.prob(text)
     ms = (time.perf_counter() - t0) * 1000
-    return ("offensive" if p >= 0.5 else "clean"), (p if p >= 0.5 else 1 - p), ms
+    flagged = p >= model.threshold          # threshold chosen on the validation split
+    return ("offensive" if flagged else "clean"), (p if flagged else 1 - p), ms
 
 
 def mask(text: str) -> str:

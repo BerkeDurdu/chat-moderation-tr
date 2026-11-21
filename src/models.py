@@ -113,6 +113,19 @@ class BertOnnxInt8Model(_BertOnnx):
     name, precision, file = "BERTurk quantized (ONNX Runtime)", "INT8", "model_int8.onnx"
 
 
+def thresholds() -> dict:
+    """Decision thresholds chosen on the validation split by src/tune_thresholds.py."""
+    path = MODEL_DIR / "thresholds.json"
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+
+
+def get(key: str):
+    """Instantiate a model and attach its decision threshold (default 0.5)."""
+    model = REGISTRY[key]()
+    model.threshold = thresholds().get(key, 0.5)
+    return model
+
+
 # the model ladder, in order; the last one is what the application serves by default
 REGISTRY = {
     "lexicon": LexiconModel,

@@ -14,25 +14,55 @@
     }
   },
   "lexicon": {
-    "val_f1": 0.6596564228250128,
-    "words": 672,
-    "min_count": 3,
+    "val_f1": 0.687179597821101,
+    "words": 295,
+    "min_count": 5,
     "min_ratio": 0.7,
     "fuzzy_min_len": 7
   },
   "tfidf": {
-    "val_f1": 0.7743759864476953,
+    "val_f1": 0.7736753080253405,
     "C": 10.0,
-    "features": 155579
+    "features": 155522
   },
   "w2v": {
-    "val_f1": 0.6940663451330962,
-    "vocab": 29026,
+    "val_f1": 0.7149797858634324,
+    "vocab": 29009,
     "dim": 200
   },
   "bert": {
-    "val_f1": 0.8353744813074555,
+    "base": "dbmdz/bert-base-turkish-cased",
+    "val_f1": 0.8425284794749975,
+    "best_epoch": 2,
+    "params_m": 111,
+    "vocab": 32000,
+    "minutes": 9.0,
     "device": "NVIDIA GeForce RTX 4050 Laptop GPU",
-    "minutes": 7.074074749151865
+    "candidates": [
+      {
+        "base": "dbmdz/bert-base-turkish-cased",
+        "val_f1": 0.8425284794749975,
+        "best_epoch": 2,
+        "params_m": 111,
+        "vocab": 32000,
+        "minutes": 9.0
+      },
+      {
+        "base": "dbmdz/bert-base-turkish-128k-cased",
+        "val_f1": 0.8378760808634982,
+        "best_epoch": 2,
+        "params_m": 184,
+        "vocab": 128000,
+        "minutes": 11.4
+      }
+    ]
+  },
+  "thresholds": {
+    "lexicon": 0.5,
+    "tfidf": 0.51,
+    "w2v_ffn": 0.5,
+    "bert_fp32": 0.34,
+    "bert_onnx_fp32": 0.34,
+    "bert_int8": 0.39
   }
 }

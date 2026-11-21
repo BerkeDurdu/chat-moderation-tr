@@ -11,7 +11,7 @@ with four models of increasing sophistication, and the application serves the la
 | – | Rule baseline: lexicon mined from the training data + minimum edit distance | B |
 | 1 | Classical baseline: tf-idf (word + character n-grams) + logistic regression | B |
 | 2 | Neural network: our own word2vec + feedforward net (SGD, backpropagation, dropout) | A (+B) |
-| 3 | Transformer: BERTurk (`dbmdz/bert-base-turkish-cased`) fine-tuned for classification | C |
+| 3 | Transformer: BERTurk fine-tuned for classification (two checkpoints tried, picked on validation) | C |
 | 4 | Quantized Transformer: the same BERTurk, dynamic INT8, ONNX Runtime – **runs in the app** | D |
 
 ## Setup
@@ -56,21 +56,21 @@ All models are evaluated on the same held-out test set (measured by `src/evaluat
 
 | Model | Precision | Macro-F1 | Accuracy | Size (MB) | Latency mean (ms) | Latency p95 (ms) | <= 50 ms |
 |---|---|---|---|---|---|---|---|
-| Lexicon + edit distance (rule) | - | 0.687 | 0.798 | 0.0 | 0.07 | 0.15 | yes |
-| tf-idf + logistic regression | FP64 | 0.766 | 0.853 | 2.5 | 2.22 | 4.14 | yes |
-| word2vec + feedforward net | FP32 | 0.702 | 0.789 | 24.0 | 0.36 | 0.59 | yes |
-| BERTurk fine-tuned (PyTorch) | FP32 | 0.816 | 0.889 | 442.5 | 31.68 | 49.99 | yes |
-| BERTurk fine-tuned (ONNX Runtime) | FP32 | 0.816 | 0.889 | 442.7 | 20.29 | 32.20 | yes |
-| BERTurk quantized (ONNX Runtime) | INT8 | 0.816 | 0.889 | 111.4 | 11.04 | 18.80 | yes |
+| Lexicon + edit distance (rule) | - | 0.697 | 0.830 | 0.0 | 0.07 | 0.16 | yes |
+| tf-idf + logistic regression | FP64 | 0.765 | 0.853 | 2.5 | 1.37 | 1.75 | yes |
+| word2vec + feedforward net | FP32 | 0.708 | 0.802 | 24.0 | 0.20 | 0.33 | yes |
+| BERTurk fine-tuned (PyTorch) | FP32 | 0.813 | 0.882 | 442.5 | 28.62 | 44.72 | yes |
+| BERTurk fine-tuned (ONNX Runtime) | FP32 | 0.813 | 0.882 | 442.7 | 18.41 | 29.80 | yes |
+| BERTurk quantized (ONNX Runtime) | INT8 | 0.822 | 0.889 | 111.4 | 8.47 | 13.97 | yes |
 
 Test set: OffensEval-TR 2020 official test set (3528 messages, 20.3% offensive).
 Latency: one message at a time, mean over 300 messages, on 13th Gen Intel(R) Core(TM) i5-13500H, 16 logical cores, CPU only.
 
-The abbreviation expansion in `src/textnorm.py` was added after the models were trained,
-so the models were trained without it; all numbers above are measured with it, exactly as the app runs.
+Decision thresholds (`models/thresholds.json`) were chosen on the validation split; the test set
+was used only for the numbers above.
 
-Latency budget: p95 ≤ 50 ms per message on CPU. The quantized model is 4× smaller and 3× faster than
-the PyTorch FP32 model with practically the same macro-F1.
+Latency budget: p95 ≤ 50 ms per message on CPU. The quantized model is 4× smaller and 3.4× faster than
+the PyTorch FP32 model and does not lose macro-F1.
 
 ## Architecture
 
@@ -89,7 +89,7 @@ user message ──> Streamlit UI (app.py)
    └────────────┴───────────────┴─────────────────┴───────────────┴──────────────────────┘
                     │ P(offensive)
                     ▼
-        post-processing: threshold 0.5 → label + confidence, mask if offensive, stop timer
+        post-processing: threshold (tuned on validation) → label + confidence, mask, stop timer
                     │
                     ▼
         Streamlit UI: chat bubble · response-time log (side panel) · comparison table
@@ -110,6 +110,7 @@ src/train_classical.py  lexicon mining, tf-idf + logistic regression (B)
 src/train_w2v_ffn.py    word2vec + feedforward network (A)
 src/train_bert.py       BERTurk fine-tuning (C)
 src/quantize.py         ONNX export + dynamic INT8 quantization (D)
+src/tune_thresholds.py  decision thresholds chosen on the validation split
 src/models.py           inference wrappers shared by app and evaluation
 src/evaluate.py         metrics, model size and latency on the held-out test set
 results/                measured numbers
@@ -122,4 +123,6 @@ slides_config.example.json  template for the presentation text
   Social Media.* LREC 2020. <https://coltekin.github.io/offensive-turkish/> (CC-BY 2.0).
   Official training set (31,756 tweets, split 90/10 into train/validation) and official
   test set (3,528 tweets).
-* **BERTurk** – `dbmdz/bert-base-turkish-cased`, Stefan Schweter, <https://huggingface.co/dbmdz/bert-base-turkish-cased>.
+* **BERTurk** – Stefan Schweter. Candidates `dbmdz/bert-base-turkish-cased` and
+  `dbmdz/bert-base-turkish-128k-cased` (<https://huggingface.co/dbmdz>); the one with the higher
+  validation macro-F1 is used.

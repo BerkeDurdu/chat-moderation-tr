@@ -1,6 +1,9 @@
 """Transformer (Area C): fine-tune BERTurk with a classification head.
 
-Model: dbmdz/bert-base-turkish-cased (WordPiece tokenizer, 12 layers, 110M parameters).
+Two pretrained BERTurk checkpoints are fine-tuned with the same recipe; the one with the higher
+validation macro-F1 is kept in models/bert (model selection never looks at the test set).
+  dbmdz/bert-base-turkish-cased       32k WordPiece vocabulary, 110M parameters
+  dbmdz/bert-base-turkish-128k-cased  128k WordPiece vocabulary, 184M parameters
 """
 import time
 
@@ -12,8 +15,10 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer, get_
 from .data import LABELS, MODEL_DIR, SEED, load_splits, log_training
 from .textnorm import normalize
 
-BASE = "dbmdz/bert-base-turkish-cased"
-MAX_LEN, BATCH, EPOCHS, LR = 64, 32, 3, 3e-5
+import shutil
+
+CANDIDATES = ["dbmdz/bert-base-turkish-cased", "dbmdz/bert-base-turkish-128k-cased"]
+MAX_LEN, BATCH, EPOCHS, LR = 64, 32, 4, 3e-5
 
 
 def encode(tok, texts):
@@ -31,24 +36,24 @@ def predict(model, tok, texts, device, batch=128):
     return np.concatenate(out)
 
 
-def main():
+def train_one(base: str, out_dir):
     torch.manual_seed(SEED)
     np.random.seed(SEED)
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"[BERT] training on {device}")
+    print(f"[BERT] fine-tuning {base} on {device}")
     train, val, _ = load_splits()
     texts, labels = train["text"].tolist(), torch.tensor(train["label"].values)
 
-    tok = AutoTokenizer.from_pretrained(BASE)
+    tok = AutoTokenizer.from_pretrained(base)
     model = AutoModelForSequenceClassification.from_pretrained(
-        BASE, num_labels=2, id2label=dict(enumerate(LABELS)), label2id={l: i for i, l in enumerate(LABELS)}).to(device)
+        base, num_labels=2, id2label=dict(enumerate(LABELS)), label2id={l: i for i, l in enumerate(LABELS)}).to(device)
 
     steps = EPOCHS * ((len(texts) + BATCH - 1) // BATCH)
     opt = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=0.01)
     sched = get_linear_schedule_with_warmup(opt, int(0.1 * steps), steps)
     scaler = torch.amp.GradScaler(enabled=device == "cuda")
 
-    best_f1, start = -1.0, time.time()
+    best_f1, best_epoch, start = -1.0, 0, time.time()
     for epoch in range(1, EPOCHS + 1):
         model.train()
         perm = torch.randperm(len(texts))
@@ -69,12 +74,30 @@ def main():
         f1 = f1_score(val["label"], predict(model, tok, val["text"].tolist(), device), average="macro")
         print(f"[BERT] epoch {epoch}  loss={total / len(perm):.4f}  val macro-F1={f1:.4f}")
         if f1 > best_f1:
-            best_f1 = f1
-            model.save_pretrained(MODEL_DIR / "bert")
-            tok.save_pretrained(MODEL_DIR / "bert")
-    print(f"[BERT] best val macro-F1={best_f1:.4f}")
-    name = torch.cuda.get_device_name(0) if device == "cuda" else "CPU"
-    log_training("bert", {"val_f1": best_f1, "device": name, "minutes": (time.time() - start) / 60})
+            best_f1, best_epoch = f1, epoch
+            model.save_pretrained(out_dir)
+            tok.save_pretrained(out_dir)
+    print(f"[BERT] {base}: best val macro-F1={best_f1:.4f} (epoch {best_epoch})")
+    return {"base": base, "val_f1": best_f1, "best_epoch": best_epoch,
+            "params_m": round(sum(p.numel() for p in model.parameters()) / 1e6),
+            "vocab": tok.vocab_size, "minutes": round((time.time() - start) / 60, 1)}
+
+
+def main():
+    device = torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU"
+    runs = []
+    for i, base in enumerate(CANDIDATES):
+        out = MODEL_DIR / f"bert_candidate_{i}"
+        runs.append({**train_one(base, out), "dir": out})
+        torch.cuda.empty_cache()
+    best = max(runs, key=lambda r: r["val_f1"])
+    shutil.rmtree(MODEL_DIR / "bert", ignore_errors=True)
+    best["dir"].rename(MODEL_DIR / "bert")
+    for r in runs:
+        shutil.rmtree(r["dir"], ignore_errors=True)
+    print(f"[BERT] selected {best['base']} (val macro-F1 {best['val_f1']:.4f})")
+    log_training("bert", {**{k: v for k, v in best.items() if k != "dir"}, "device": device,
+                          "candidates": [{k: v for k, v in r.items() if k != "dir"} for r in runs]})
 
 
 if __name__ == "__main__":

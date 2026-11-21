@@ -16,7 +16,7 @@ HF_REPO = "Berke111/chat-moderation-tr"
 REPO_NAME = "chat-moderation-tr"
 ROOT = Path(__file__).resolve().parent
 MODELS = ROOT / "models"
-NEEDED = ["lexicon.json", "tfidf_lr.joblib", "w2v_ffn.pt", "bert/model.safetensors",
+NEEDED = ["thresholds.json", "lexicon.json", "tfidf_lr.joblib", "w2v_ffn.pt", "bert/model.safetensors",
           "bert_onnx/model_int8.onnx", "bert_onnx/model_fp32.onnx"]
 
 

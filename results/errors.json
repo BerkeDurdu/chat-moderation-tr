@@ -1,205 +1,205 @@
 {
-  "int8_fp32_agreement": 0.9900793650793651,
+  "int8_fp32_agreement": 0.9886621315192744,
   "errors": [
     {
-      "text": "O günler geçti canımıniçi, bir daha karşılaşmamak dileğiyle",
-      "gold": 1,
-      "p_offensive": 0.004044691566377878
+      "text": "@USER @USER Öğrenmemeleri için öyle bir hale getirmişler ki bir bakın isterseniz.. okuyabilirseniz alkışlarız. Rezalet iprenç ve aşağılık şekilde çocuklarımızın zekasıyla oynanıyor😡",
+      "gold": 0,
+      "p_offensive": 0.975581169128418
     },
     {
-      "text": "8 kişi kaldı be yazıklar olsun size shshshshs",
-      "gold": 1,
-      "p_offensive": 0.00414340989664197
+      "text": "Gerizekalılar buna emin olun sizden çok Galatasaray taraftarı tepki gösterir. Ayrıca ofsaytı orta hakem vermiyor",
+      "gold": 0,
+      "p_offensive": 0.9692187905311584
     },
     {
-      "text": "Sipammmmm yaa    Geldi hem laptopu aldı    Hem de beni esir aldı 😂😂",
-      "gold": 1,
-      "p_offensive": 0.004641570616513491
+      "text": "@USER Eric Cantona da gelirmi ama sikolsu çok isterim.",
+      "gold": 0,
+      "p_offensive": 0.9643798470497131
     },
     {
-      "text": "@USER yapram bende diyorum kı yeni sezon by17 imzalı vereyım sana çok istiyorsan :D",
-      "gold": 1,
-      "p_offensive": 0.005464312620460987
+      "text": "İstifa diyen terbiyesizlik yapan bütün hesaplar bi gidin .! Saygısızlık etmeyin .",
+      "gold": 0,
+      "p_offensive": 0.9636038541793823
     },
     {
-      "text": "Çin'den ithal olunca ancak bu kadar olur diyorum",
-      "gold": 1,
-      "p_offensive": 0.005607543978840113
+      "text": "@USER @USER Fetöye en başta karşı çıkan cemaat. İçeriye sokmayın bunları diye ikitdar partisine karşı çıkan hoca dediğiniz o şarlatan amerikanın adamı diye bas bas bağıran ama bi türlü kendini duyuramayan tek cemaattir.  Süleymanlı cemaati. Sizde bu iftiralarla çok güzel yere gelrsnz",
+      "gold": 0,
+      "p_offensive": 0.955977737903595
     },
     {
-      "text": "Tanışmak isteyen ve sohbet etmek isteyen var mı ?   İyi geceler",
-      "gold": 1,
-      "p_offensive": 0.006795188412070274
+      "text": "dalgasına f*nansal k*lelerle ilgili tweet atmıştım 30 dk içinde 20 kişi 5 senelik okul ücretimi karşılayacak şeyler yazmışlardı gram şaşırmadım cidden",
+      "gold": 0,
+      "p_offensive": 0.9495652914047241
     },
     {
-      "text": "Bangtan askere gitse bile gruplarınız yine ilgi görmeyecek. Army yine Bangtanın eski şarkılarını dinliycek. Army’nin aradığı şey kalite bu da gruplarınızda olmadığına göre flop geldiniz floğ gideceksiniz @USER",
-      "gold": 1,
-      "p_offensive": 0.007000476587563753
+      "text": "@USER @USER @USER İşine geldimi yapancı kaynaklara bakın gelmedimi onlar gavur yalan yazar ii salıyon zurnanın son deli ahmey",
+      "gold": 0,
+      "p_offensive": 0.9424034953117371
     },
     {
-      "text": "Bir şirkette ayaklar baş olmaya başladı mı, tüymenin vakti gelmiş demektir..",
-      "gold": 1,
-      "p_offensive": 0.007009720895439386
+      "text": "Salak yerine koymaya çalıştığınız insanların zeka seviyesini bir irdeleyip hareket ederseniz her şey sizin için daha kolay olur",
+      "gold": 0,
+      "p_offensive": 0.9423070549964905
     },
     {
-      "text": "Vay anasını ne büyük dertler hsgauahajhaqi",
-      "gold": 1,
-      "p_offensive": 0.007077852264046669
+      "text": "TV de   Erdoğan'a soruyorlar   İstanbul depreme hazır mı?   Cevap:Büyük depremde faturası ne olur belli değil.Ben bundan Endişeliyim korkuyorum      Bunu 25 senedir İstanbul'u,   17 senedir Türkiye'yi yöneten Cumhurbaşkanı söylüyor.      Allah belanı versin Lidyalılar ne hale getirdin İstanbul'u",
+      "gold": 0,
+      "p_offensive": 0.9407214522361755
     },
     {
-      "text": "Eski sevgilimi Tinder’da göremem çünkü hornet kullanıyor. Djjdxj keşke şaka olsaydi:(",
-      "gold": 1,
-      "p_offensive": 0.0077794319950044155
+      "text": "idda ediyorum bi kemalist ataturkçu insan mesela yaşamının on kusur yılının içine etmiş bi hükümeti destekleyen insanları onalra yeşil ışık yakınca böyle anasına hallenip babasının başını kesip sarap içmiş ve bin kişiyi öldürüp töbe etmiş gibi muamale görüyor. cubbelinin tabiri",
+      "gold": 0,
+      "p_offensive": 0.9382444620132446
     },
     {
-      "text": "@USER @USER Haci abine gonderecegin yorumu sayin Tanala gondermissiniz.😂😂Ne kullanmisin sabah sabah?Yoksa geceden kalma hasar mi var?",
-      "gold": 1,
-      "p_offensive": 0.008241068571805954
+      "text": "Chp yı hdp ve pkk ıle vurmaya calısanlar bu görüntüleri ne cabuk unuttular pardon f.montajdı bunlar özür dilerım",
+      "gold": 0,
+      "p_offensive": 0.9244314432144165
     },
     {
-      "text": "@USER Kamil koçtan aldığım otobüs bileti 2 kere iptal olunca ettiğim küfürler yerini buluyo galiba xksmcmwmcö",
-      "gold": 1,
-      "p_offensive": 0.008340084925293922
+      "text": "@USER @USER @USER @USER Neden ? Yoksa @USER kaçırıldı mı?tehtit mi edildi? Neden utanalım kibrini zaten yazıyordum şimdi ya beceriksiz ya da Binali beyi o istemiyor nasıl istersen öyle düşün İstanbul il teşkilatı uzun zamandır bitik durumda",
+      "gold": 0,
+      "p_offensive": 0.9226115942001343
     },
     {
-      "text": "@USER Ya arkadaş nerde büyüttün onu da🔵",
-      "gold": 1,
-      "p_offensive": 0.009007769636809826
+      "text": "@USER @USER Ne alakası var. Mikrofona konuşmak günah değil. Bence geri zihniyetli biri varsa o da sizsiniz. Tanıdığım çarşaflı bit akademisyen bile var. Yanlış çok yanlış. Düşünceleriniz.",
+      "gold": 0,
+      "p_offensive": 0.9224264621734619
     },
     {
-      "text": "Senelerce doğruyum çalışkanım büyüklerimi saymak küçüklerimi korumak dedikte hani doğru adam hani çalışkan adam hani büyüğüne saygılı vatandaş??? Bunları papağan misali dile dolayacağınıza zihinlere kazıyın #OkullardaANDIMIZOkutulsun",
-      "gold": 1,
-      "p_offensive": 0.009025966748595238
+      "text": "@USER @USER @USER Ekonomi diyorsun iyi, güzel ama Babacan zamani değil mi çin malı ile türk ekonomisinin içi boşaldı",
+      "gold": 0,
+      "p_offensive": 0.9206077456474304
     },
     {
-      "text": "@USER @USER merhaba efenfim.   orası doğru. yalnız der spigel \"das zeitalter der autokraten\" derken, reisicumhur \"dünyayı şekillendiren liderler\" yazıldı sanıyor! (:",
-      "gold": 1,
-      "p_offensive": 0.00918028224259615
+      "text": "@USER 😍😍 oooo hayırlı olsun bakalım...      Ağzıbozuğun karşısında onun sizi çekmek isteyeceği seviyesizliğe düşmeyin bize yeter sayın Vekilim 👍🏻      #chp #secim2018",
+      "gold": 0,
+      "p_offensive": 0.9205401539802551
     },
     {
-      "text": "@USER @USER Bencede,iyi bir ısırık sevginin en onemli göstergesidir,oozellikle popoya atılan",
-      "gold": 1,
-      "p_offensive": 0.00921301357448101
+      "text": "@USER @USER Bence kirasını versin sonuçta haram geçmez kursağından geçmeniş muammerde şahit olur",
+      "gold": 0,
+      "p_offensive": 0.9190428853034973
     },
     {
-      "text": "anlık seni istemiyorum isimli wp kitabı okuyorum kusmama ramak kaldı",
-      "gold": 1,
-      "p_offensive": 0.009912081994116306
+      "text": "@USER Yaramaz çocuk gibiler gözünü ayırma ayarı yok ya la bunların.",
+      "gold": 0,
+      "p_offensive": 0.9144594073295593
     },
     {
-      "text": "#AdliEşitYasaİleAdaleteGüven   Önce haince içerde çürütülen canlarımız için geniş kapsamlı af sonra oy 8 milyon söz veriyor @USER @USER @USER @USER @USER @USER @USER",
-      "gold": 1,
-      "p_offensive": 0.010029072873294353
+      "text": "@USER Devletin eline nasıl yapışmış. Kemal dan bişey çıkmadı galiba",
+      "gold": 0,
+      "p_offensive": 0.9079535007476807
     },
     {
-      "text": "TRUMP ne demiş    Suriyeden kısa zaman içinde çıkacağız    #ProjeTerörÖrgütleri ne verdiğin sil da alıp DEFOL TRUMP",
-      "gold": 1,
-      "p_offensive": 0.010177148506045341
+      "text": "Annemi az önce Akpartiye üye yapmak için aradılar, hiçbir şekilde istemiyorum yapmayın diyor, karşıdaki yapıcam diye ısrar ediyor. Saçmalığa bakın sabah sabah😄😄",
+      "gold": 0,
+      "p_offensive": 0.9069241881370544
     },
     {
-      "text": "Değil unutmak acısı hafifleyenin kanı kurusun. #FıratYılmazÇakıroğlu",
-      "gold": 1,
-      "p_offensive": 0.01031341403722763
+      "text": "Çaya siyanür katmışlar.      Kininizi son hafta oynayacağız Trabzona saklayın , biz çok üzeriz sizi.",
+      "gold": 0,
+      "p_offensive": 0.8984370827674866
     },
     {
-      "text": "@USER @USER Paris gibi, şimdi hep çarşaflı dolu.",
-      "gold": 1,
-      "p_offensive": 0.010539255104959011
+      "text": "#ölümüneerdoğan  bu tagı açan hakkında savcılar harekete gecmeli, bölücülük yapıyor. Cumhur başkanı hepimizin Cumhurbaşkanıdır. Ölürsek ölümüne Türkiye için ölürüz, makam için değil.",
+      "gold": 0,
+      "p_offensive": 0.8984054923057556
     },
     {
-      "text": "@USER Son dizisinden sonra biraz daha unutulsun. Hatta askere gitsin 2 sene gelmesin mümkünse.",
-      "gold": 1,
-      "p_offensive": 0.011292528361082077
+      "text": "Türk bayrağına tahammül edemeyenlere sen mazbata ve yetki verirsen ey YSK ey güzel devletim   Teröristler hainler bitmez bu ülkede",
+      "gold": 0,
+      "p_offensive": 0.8968533873558044
     },
     {
-      "text": "@USER olgun kadın başka olur. Tercihim olgun kadınlar.",
-      "gold": 1,
-      "p_offensive": 0.011571776121854782
+      "text": "Salah ın yavaş yavaş  müslüman  yaptığı taraftarı  90 dakikada dinden imandan çıkardın  karius",
+      "gold": 0,
+      "p_offensive": 0.894202470779419
     },
     {
-      "text": "Bir ara ben ben ben furyası vardı ben şöyle severim ben öyle derlersi muhabbette şimdi de e yani nolacak herkes böyle herkes zaten şöyle yapıyor başladı sk gibi muhabbetlerde uyuz oluyorum",
-      "gold": 1,
-      "p_offensive": 0.011880971491336823
+      "text": "@USER İyi oldu olum işte daha ne istiyorsun. Bir vasıfsızdan daha kurtulduk şükürler olsun",
+      "gold": 0,
+      "p_offensive": 0.8915590643882751
     },
     {
-      "text": "Merve fanlari kucuk daglari biz yarattik havasinda gibi gorunuyor hala.Merve’nin elenip bu kadar konusulmasi onun samimiyetinden veya ortaya koydugu saglam karakterden degil,uyanin sabah oldu guzel kardeslerim ahdkajakab #Survivor2018",
-      "gold": 1,
-      "p_offensive": 0.0124906525015831
+      "text": "Seksten sonra çocuk olabilmesi için kadının da boşalması gerekseydi dünya nüfusu ne kadar olurdu bin kişi filan heralde",
+      "gold": 0,
+      "p_offensive": 0.8915215730667114
     },
     {
-      "text": "Ay ben yine samimiyetsiz saatlerime geldim en iyisi yatmak",
-      "gold": 1,
-      "p_offensive": 0.012573589570820332
+      "text": "@USER @USER Bak kardeşim. Bu adam (Cbbeli)bu konuşmalarından veya başka dini sohbetlerinden para falan kazanmıyor; ihtiyacı da yok; babadan zengin; hatta cebinden para veriyor. Keşke sen de yapabilsen.",
+      "gold": 0,
+      "p_offensive": 0.8877802491188049
     },
     {
-      "text": "@USER Turksat abonesiyim.Hd yayın diye hd decoderi kakaladınız.1.kanal hariç HD yazan  tüm kanallarınız sd yayın  yapıyor😬😬Peşin ödediğim içi katlandım ama yeni sezonda ya Turksatta da tüm kanallarınız  ÇAKMA DEĞİL GERÇEKTEN HD olur.yoksa  işim OLMAZ",
-      "gold": 1,
-      "p_offensive": 0.013838917948305607
+      "text": "Allahım sen hiç bir şeyden habersiz değilsin   Zalimlerin bütün oyunlarını biliyor,görüyorsun   Hiç bir faniye değildir güvenimiz,sadede Sana,   Nolur,salıver öğretmenlerimizi,sevindir ailelerini ve tüm sevenlerini   Boşa çıkar zalimin menfur ve adi düzenini amin   #KosovoStopExtradition",
+      "gold": 0,
+      "p_offensive": 0.885953962802887
     },
     {
-      "text": "@USER Adam her yarışta lastiklerde sıkıntı var diye diye şampiyon oluyo her sene.. Pardon adam demişim.",
-      "gold": 1,
-      "p_offensive": 0.013846181333065033
+      "text": "@USER Neyse ki psikopatız ölene kadar #şükürmoment",
+      "gold": 0,
+      "p_offensive": 0.8846047520637512
     },
     {
-      "text": "@USER @USER @USER Manyak mısın bilader ben kaymak derken meşhur ya o bakımdan",
-      "gold": 1,
-      "p_offensive": 0.014424215070903301
+      "text": "@USER O sucsuzdur ve Herkes Bunu biliyor, Bu zulme dur diyin artik!",
+      "gold": 0,
+      "p_offensive": 0.8821379542350769
     },
     {
-      "text": "Kurban olduğum Allahım şu erkekler musically çekmesin artık",
-      "gold": 1,
-      "p_offensive": 0.014658007770776749
+      "text": "@USER @USER @USER Hayvanlar mal, eğlence aracı değildir. Hayvan sömürüsünden para kazanan ahlaksız sirklere yasak getirmeniz gerekirken, sizler onları mı davet ediyor sunuz? #Ayıp #hayvanözgürlüğü #hayvanlaraadalet #hayvanhakları",
+      "gold": 0,
+      "p_offensive": 0.8802154064178467
     },
     {
-      "text": "Dünyaca ünlü Biyoloji öğretmeni Tuğçe Karaduman topuklu ayakkabılarıyla metroda.",
-      "gold": 1,
-      "p_offensive": 0.01504005677998066
+      "text": "arkadasım tuvalete gıtmeye usendıgı ıcın altına işemiş allah akıl versin",
+      "gold": 0,
+      "p_offensive": 0.8724778294563293
     },
     {
-      "text": "oha yuh cus kac gundur sizi bensiz biraktigim icin sorryy😭😭😭😭",
-      "gold": 1,
-      "p_offensive": 0.015289121307432652
+      "text": "Cidden sinirlendim. Severim filan ama bu kopyacılık yaptıkları anlamını değiştirmez. Biz kopya çeksek olay olur ama... yg oyunlarına kanın kanın... güzel pazarlıyor",
+      "gold": 0,
+      "p_offensive": 0.8721308708190918
     },
     {
-      "text": "@USER Hayal kurmaya devam et benim shipim onaylı sen böyle laf et dur",
-      "gold": 1,
-      "p_offensive": 0.015593518503010273
+      "text": "@USER @USER Ne iş yapıyorsa oradan yürüyorlar. Akıllandılar artık. Korkarımki İstanbul irticanın hortladığı yer olacak. 😂😂",
+      "gold": 0,
+      "p_offensive": 0.870171308517456
     },
     {
-      "text": "@USER Yeeni yıla bak anasını satıyım6 Günündeeyiz 5 günü tatildiGeeldee seevmee böylee yılıafeerin yeeni yılafeerin",
-      "gold": 1,
-      "p_offensive": 0.015620478428900242
+      "text": "@USER Kadınları anlayamıyorum diyen erkek lar ekini cıkarıp kadınınla ilgilen belki anlarsın",
+      "gold": 0,
+      "p_offensive": 0.8566062450408936
     },
     {
-      "text": "Murat'la yarışmak istemem diyen ama ilk oyunda onu seçen yandan çarklı Turbo yenildi   #Survivor2018 #MuratCeylan #HilMur",
-      "gold": 1,
-      "p_offensive": 0.01563887670636177
+      "text": "Az önce ablam bişey sordu he dedim yeğenim (2) he yok evet var edepsiz dedi folikasit çocuğu seni",
+      "gold": 0,
+      "p_offensive": 0.8526709079742432
     },
     {
-      "text": "@USER bu kızın gerçek yüzünü görmeden sakın seni seviyorum demeyin sibsisnsonaoanisjsjsjkansks",
-      "gold": 1,
-      "p_offensive": 0.015928072854876518
+      "text": "Arkadaşlar cumartesi için yakışıklı güvenilir saygılı kılsız ap istiyoruz.lutfen sadece ap ler yazsın",
+      "gold": 0,
+      "p_offensive": 0.8472521305084229
     },
     {
-      "text": "Biz ayrımcılığa son için her platformda kadro istedik siz sözleşmelilerinde kendi arasında ayrımcılık çıkardınız bu Adalet değil #SözlesmeliyeAyrımsızKadro",
-      "gold": 1,
-      "p_offensive": 0.016369061544537544
+      "text": "Yorumları okuyun altı komple fetöcü övgü şöleni",
+      "gold": 0,
+      "p_offensive": 0.8457580208778381
     },
     {
-      "text": "@USER aşırı komikmiş kardeş ilk esprin mi",
-      "gold": 1,
-      "p_offensive": 0.016718745231628418
+      "text": "Aktifim sex yapmak istiyen dm gelsin",
+      "gold": 0,
+      "p_offensive": 0.8385900855064392
     },
     {
-      "text": "O işler işte öyle olmuyor  #TarihSiziAffetmeyecek",
-      "gold": 1,
-      "p_offensive": 0.01695287972688675
+      "text": "Saatlerdir internetten deri pantolon seçmeye çalışıyorum ama hiç bişeyin bana olup olmayacağından emin olamıyorum siz nasıl kahinlersiniz nasıl kumarbazlarsınız siz",
+      "gold": 0,
+      "p_offensive": 0.8305641412734985
     },
     {
-      "text": "Ya siz niye böyle kafayı yediniz :(",
-      "gold": 1,
-      "p_offensive": 0.017982151359319687
+      "text": "@USER @USER Şarap yapıyorsun kardeşim iyi güzelde başında türbanın var ..demezlermi şarap müslümana haram kılındı ..başka bir dalda eğitim alsaydın da..o türbanın hakkını versen daha iyi olmazmıydı",
+      "gold": 0,
+      "p_offensive": 0.8304677605628967
     }
   ]
 }
